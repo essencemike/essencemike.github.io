@@ -1,0 +1,33 @@
+language: node_js
+node_js: stable
+
+cache:
+  directories:
+    - node_modules
+
+install:
+  - npm install
+  - npm install ejs
+
+before_script:
+
+script:
+  - hexo clean
+  - hexo g
+
+after_script:
+  - cd ./public
+  - git init
+  - git config user.name "IMike"
+  - git config user.email "gzxessence@163.com"
+  - git add .
+  - git commit -m "update docs"
+  - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:master
+
+branches:
+  only:
+    - hexo
+
+env:
+  global:
+    - GH_REF: github.com/essencemike/essencemike.github.io.git
